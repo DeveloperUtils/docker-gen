@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  portainer:
+    image: portainer/portainer-ce
+    environment:
+      VIRTUAL_HOST: tools.vm.local
+      WEB_PORTS: 9000
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "portainer_data:/data"
+    labels:
+      com.github.developerutils.docker-gen.enabled: yes
+      com.github.developerutils.docker-gen.domain: tools.vm.local
+      com.github.developerutils.docker-gen.ports: 9000
+
+volumes:
+  portainer_data:
