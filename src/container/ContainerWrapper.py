@@ -1,6 +1,6 @@
 from docker.models.containers import Container
 
-from src.ContainerConfig import ContainerConfig
+from src.container.ContainerConfig import ContainerConfig
 
 
 class ContainerWrapper:
