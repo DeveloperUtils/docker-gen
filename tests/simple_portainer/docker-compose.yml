@@ -1,6 +1,11 @@
 version: '3.8'
 
 services:
+  nginx:
+    image: nginx:latest
+    labels:
+      com.github.developerutils.docker-gen.enabled: yes
+      com.github.developerutils.docker-gen.outbound: yes
   portainer:
     image: portainer/portainer-ce
     environment:

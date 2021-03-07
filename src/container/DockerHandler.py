@@ -2,7 +2,7 @@ import logging
 
 from docker import DockerClient
 
-from src.container.ContainerWrapper import ContainerWrapper
+from src.container.model.ContainerWrapper import ContainerWrapper
 from src.container.model.Domain import DockerPublicNetwork
 from src.render.OutputHandler import OutputHandler
 

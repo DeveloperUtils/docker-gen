@@ -5,7 +5,7 @@ import os
 
 from jinja2 import Environment
 
-from src.container.ContainerWrapper import ContainerWrapper
+from src.container.model.ContainerWrapper import ContainerWrapper
 from src.container.model.Domain import DockerPublicNetwork
 
 logger = logging.getLogger(__name__)
@@ -29,8 +29,8 @@ class OutputHandler:
                     "id": container.id(),
                     "name": container.id(),
                     "ip_v4": {
-                        "ip": container.exposed_ip4_address(),
-                        "port": container.exposed_ip4_port()
+                        "ip": container.network.exposed_ip4_address(),
+                        "port": container.network.exposed_ip4_port()
                     }
                 }
             )
