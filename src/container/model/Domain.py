@@ -3,15 +3,12 @@ from src.container.ContainerWrapper import ContainerWrapper
 
 
 class DockerPublicNetwork:
-    containers: list[ContainerWrapper]
-    networks: list[ContainerNetwork]
+    containers: dict[ContainerWrapper]
+    networks: dict[ContainerNetwork]
 
     def __init__(self):
-        self.containers=[]
-        self.networks=[]
+        self.containers = {}
+        self.networks = {}
 
-    def get_active(self):
-        pass
-
-    def to_output(self):
-        pass
+    def add_container(self, container: ContainerWrapper):
+        self.containers[container.id()] = container

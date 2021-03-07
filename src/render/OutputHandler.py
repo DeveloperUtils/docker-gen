@@ -5,6 +5,7 @@ import os
 
 from jinja2 import Environment
 
+from src.container.ContainerWrapper import ContainerWrapper
 from src.container.model.Domain import DockerPublicNetwork
 
 logger = logging.getLogger(__name__)
@@ -20,15 +21,16 @@ class OutputHandler:
     def run(self, domain: DockerPublicNetwork):
         logger.info("Template Dir: %s, Output Dir: %s", self.template_dir, self.output_dir)
         output_context = {"containers": []}
-        for container in domain.containers:
+        for container_key in domain.containers:
+            container: ContainerWrapper = domain.containers[container_key]
             output_context["containers"].append(
                 {
                     "__raw__": container.raw,
                     "id": container.id(),
-                    "networks": {
-                        "ips": {
-                            "to_public": "j"
-                        }
+                    "name": container.id(),
+                    "ip_v4": {
+                        "ip": container.exposed_ip4_address(),
+                        "port": container.exposed_ip4_port()
                     }
                 }
             )

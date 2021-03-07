@@ -16,7 +16,6 @@ class DockerHandler:
     def __init__(self, client: DockerClient, output_handler: OutputHandler):
         self.client = client
         self.output_handler = output_handler
-        self.topology = DockerPublicNetwork()
 
     def init(self):
         self.refresh_container(event=None)
@@ -28,11 +27,12 @@ class DockerHandler:
 
     def refresh_container(self, event):
         logger.debug("###### REFRESH START ############################")
+        self.topology = DockerPublicNetwork()
         containers = self.client.containers.list(all=True)
         for container in containers:
             container_wrap = ContainerWrapper(container)
             if container_wrap.is_running():
-                self.topology.containers.append(container_wrap)
+                self.topology.add_container(container_wrap)
                 logger.debug("RUNNING: " + container_wrap.id())
                 if container_wrap.is_relevant():
                     logger.info("FOUND RELEVANT RUNNING CONTAINER id:%s", container_wrap.id())
