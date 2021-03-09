@@ -95,27 +95,51 @@ class NetworkSettings:
         }
     }
     """
-    raw: dict
+    raw: dict[str, str]
 
     def __init__(self, settings: dict):
         self.raw = settings
-        self._networks: dict[ContainerNetwork] = self.get_all_networks(self.raw)
+        self._networks: dict[str, ContainerNetwork] = self._get_all_networks(self.raw)
         self.ports: Ports = Ports(self.raw["Ports"])
 
     def exposed_ip4_address(self) -> str:
         first_network: ContainerNetwork = list(self._networks.values())[0]
         return first_network.get_ip4_address()
 
-    def exposed_ip4_port(self) -> dict[str]:
+    def exposed_ip4_port(self) -> dict[str, dict]:
         return self.ports.get_exposed()
 
+    def get_networks(self):
+        return self._networks
+
+    def listens_on(self, network_id: str) -> bool:
+        if network_id in self._networks.keys():
+            return True
+        else:
+            return False
+
     @staticmethod
-    def get_all_networks(attrs: dict) -> dict[ContainerNetwork]:
+    def _get_all_networks(attrs: dict) -> dict[str, ContainerNetwork]:
         networks: dict = attrs["Networks"]
-        ret: dict = {}
+        ret: dict[str, ContainerNetwork] = {}
         for network_id, network in networks.items():
             ret[network_id] = ContainerNetwork(network_id, network)
         return ret
+
+    def has_connection_to(self, network):
+        """
+
+        :type network: NetworkSettings
+        """
+        for net_id in self._networks:
+            if net_id in network._networks:
+                return True
+        return False
+
+    def get_connected_to(self, gateway):
+        for net_i in self._networks:
+            if net_i in gateway.network._networks:
+                return self._networks[net_i]
 
 
 class Ports:

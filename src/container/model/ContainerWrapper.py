@@ -19,7 +19,29 @@ class ContainerWrapper:
         return self.wrapped.id
 
     def name(self) -> str:
-        return self.wrapped.name
+        if self.wrapped.name:
+            return self.wrapped.name
+        else:
+            return self.id()
 
     def is_relevant(self) -> bool:
-        return self.config.is_enabled()
+        return self.config.is_enabled() and (self.is_public_gateway() or self.config.is_configured())
+
+    def is_public_gateway(self) -> bool:
+        return self.config.is_public_gateway()
+
+    def has_connection_to(self, container) -> bool:
+        """
+
+        :type container: ContainerWrapper
+        """
+        return container.network.has_connection_to(self.network)
+
+    def get_exposed_ip4_port_on(self, network: ContainerNetwork) -> dict[str, dict]:
+        return self.network.exposed_ip4_port()
+
+    def url_domain(self) -> str:
+        return self.config.url_domain()
+
+    def url_path(self) -> str:
+        return self.config.url_path()
