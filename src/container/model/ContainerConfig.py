@@ -1,6 +1,5 @@
-from typing import Optional
-
 import logging
+from typing import Optional
 
 from src.Utils import is_true
 
@@ -40,7 +39,7 @@ class ContainerConfig:
         if KEY_URL in self.raw.keys():
             split_: list[str] = self.raw[KEY_URL].split("/", 1)
 
-            if len(split_) > 1:
+            if len(split_) > 1 and len(str.strip(split_[1])) > 1:
                 return split_[1]
         return "/"
 

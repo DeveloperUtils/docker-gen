@@ -35,7 +35,10 @@ class ContainerWrapper:
 
         :type container: ContainerWrapper
         """
-        return container.network.has_connection_to(self.network)
+        if not container:
+            return False
+        else:
+            return container.network.has_connection_to(self.network)
 
     def get_exposed_ip4_port_on(self, network: ContainerNetwork) -> dict[str, dict]:
         return self.network.exposed_ip4_port()

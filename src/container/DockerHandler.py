@@ -22,7 +22,7 @@ class DockerHandler:
 
     def handle(self, event):
         action = event['Action']
-        if action == 'start' or action == 'stop':
+        if action in ['start', 'stop', 'die']:
             self.refresh_container(event)
 
     def refresh_container(self, event):

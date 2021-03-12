@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.9
 
 WORKDIR /usr/src/app
 
@@ -23,7 +23,7 @@ RUN pip install --no-cache-dir \
     urllib3 \
     websocket-client
 
-RUN pip install --no-cache-dir docker
+RUN pip install --no-cache-dir docker jinja2
 
 COPY . /usr/src/app
 

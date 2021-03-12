@@ -1,10 +1,8 @@
 {% for container in containers -%}
-    # upstream {{ container.name }}({{ container.id }})
-    upstream {{ container.name }} {
+# upstream {{ container.name }}({{ container.id }})
+upstream {{ container.name }} {
 
-        server {{ container.ip_v4.ip }}{% if container.ip_v4.port %}:{{ container.ip_v4.port.tcp }}{% endif %};
+    server {{ container.ip_v4.ip }}{% if container.ip_v4.port %}:{{ container.ip_v4.port.tcp }}{% endif %};
 
-    }
-
-    # {{ container.__raw__ }}
+}
 {% endfor %}
