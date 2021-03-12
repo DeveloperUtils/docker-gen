@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  portainer:
+    image: portainer/portainer-ce
+    environment:
+      VIRTUAL_HOST: tools.vm.local
+      WEB_PORTS: 9000
+    ports:
+      - 9000:9000
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "portainer_data:/data"
+    networks:
+      - dmz_external
+      - internal
+    labels:
+      com.github.developerutils.docker-gen.enabled: yes
+      com.github.developerutils.docker-gen.url: tools.vm.local/
+      com.github.developerutils.docker-gen.ports: 9000
+  whoami:
+    image: jwilder/whoami
+    environment:
+      WEB_PORTS: 8009
+      VIRTUAL_HOST: tools.imt.vm.local
+      PORT: 9999
+    networks:
+      - internal
+
+volumes:
+  portainer_data:
+
+networks:
+  internal:
+  dmz_external:
+    external: true
+    name: dmz_external

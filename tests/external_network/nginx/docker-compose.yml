@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    labels:
+      com.github.developerutils.docker-gen.enabled: yes
+      com.github.developerutils.docker-gen.outbound: yes
+    volumes:
+      - nginx_config:/etc/nginx/conf.d
+    networks:
+      - dmz_external
+  docker-gen-nxt:
+    build:
+      context: ../../../
+    environment:
+      DOCKER_HOST: "unix://tmp/docker.sock"
+    volumes:
+      - "../../../:/usr/src/app"
+      - "../../../config:/usr/src/app/config"
+      - nginx_config:/usr/src/app/output
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+
+volumes:
+  nginx_config:
+
+networks:
+  dmz_external:
+    name: dmz_external
