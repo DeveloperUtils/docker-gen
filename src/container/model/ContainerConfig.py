@@ -1,7 +1,7 @@
 import logging
 from typing import Optional
 
-from src.Config import KEY_ENABLED, KEY_OUTBOUND, KEY_URL
+from src.Config import KEY_ENABLED, KEY_OUTBOUND, KEY_URL, KEY_FORWARD_PORT
 from src.Utils import is_true
 
 logger = logging.getLogger(__name__)
@@ -44,3 +44,7 @@ class ContainerConfig:
         if KEY_URL in self.raw.keys():
             split_ = self.raw[KEY_URL].split("/", 1)
             return split_[0]
+
+    def get_forward_port(self) -> Optional[str]:
+        if KEY_FORWARD_PORT in self.raw.keys():
+            return str.strip(self.raw[KEY_FORWARD_PORT])

@@ -40,7 +40,9 @@ class ContainerWrapper:
         else:
             return container.network.has_connection_to(self.network)
 
-    def get_exposed_ip4_port_on(self, network: ContainerNetwork) -> dict[str, dict]:
+    def get_exposed_ip4_port_on(self, network: ContainerNetwork) -> dict[str, str]:
+        if self.config.get_forward_port():
+            return {"tcp": self.config.get_forward_port()}
         return self.network.exposed_ip4_port()
 
     def url_domain(self) -> str:

@@ -106,7 +106,7 @@ class NetworkSettings:
         first_network: ContainerNetwork = list(self._networks.values())[0]
         return first_network.get_ip4_address()
 
-    def exposed_ip4_port(self) -> dict[str, dict]:
+    def exposed_ip4_port(self) -> dict[str, str]:
         return self.ports.get_exposed()
 
     def get_networks(self):
@@ -159,7 +159,7 @@ class Ports:
     def __init__(self, ports: dict):
         self.raw = ports
 
-    def get_exposed(self) -> dict[str]:
+    def get_exposed(self) -> dict[str, str]:
         ret: dict[str] = {}
         for key in self.raw:
             if self.raw[key]:
