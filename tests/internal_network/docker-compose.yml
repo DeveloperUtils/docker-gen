@@ -24,7 +24,7 @@ services:
     labels:
       com.github.developerutils.docker-gen.enabled: yes
       com.github.developerutils.docker-gen.url: tools.vm.local/
-      com.github.developerutils.docker-gen.ports: 9000
+      com.github.developerutils.docker-gen.exposed-port: 9000
   whoami:
     image: jwilder/whoami
     environment:
