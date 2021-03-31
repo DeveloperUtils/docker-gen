@@ -28,14 +28,22 @@ class DockerHandler:
     def refresh_container(self, event):
         logger.debug("###### REFRESH START ############################")
         self.topology = DockerPublicNetwork()
-        containers = self.client.containers.list(all=True)
-        for container in containers:
-            container_wrap = ContainerWrapper(container)
-            if container_wrap.is_running():
-                self.topology.add_container(container_wrap)
-                logger.debug("RUNNING: " + container_wrap.id())
-                if container_wrap.is_relevant():
-                    logger.info("FOUND RELEVANT RUNNING CONTAINER id:%s", container_wrap.id())
-                logger.debug(container_wrap.id())
-        self.output_handler.run(self.topology)
-        logger.debug("###### REFRESH END ############################")
+        done: bool = False
+        retries: int = 0
+        while not done and retries < 5:
+            try:
+                containers = self.client.containers.list(all=True)
+                for container in containers:
+                    container_wrap = ContainerWrapper(container)
+                    if container_wrap.is_running():
+                        self.topology.add_container(container_wrap)
+                        logger.debug("RUNNING: " + container_wrap.id())
+                        if container_wrap.is_relevant():
+                            logger.info("FOUND RELEVANT RUNNING CONTAINER id:%s", container_wrap.id())
+                        logger.debug(container_wrap.id())
+                self.output_handler.run(self.topology)
+                done = True
+                logger.debug("###### REFRESH END ############################")
+            except:
+                logger.warning("Exception")
+                retries += 1
