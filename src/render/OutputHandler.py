@@ -58,7 +58,7 @@ class OutputHandler:
                     logger.info("Ren: %s", render)
                 else:
                     with open(os.path.join(self.template_dir, entry.name), 'r') as in_file:
-                        with open(os.path.join(self.output_dir, os.path.splitext(entry.name)[0]), 'wt') as out_file:
+                        with open(os.path.join(self.output_dir, entry.name), 'wt') as out_file:
                             line = in_file.read()
                             out_file.write(str(line))
                 logger.info("Rendering %s", entry.name)
