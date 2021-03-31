@@ -50,3 +50,20 @@ class ContainerWrapper:
 
     def url_path(self) -> str:
         return self.config.url_path()
+
+    def ssl_enable(self):
+        return self.config.is_ssl_enabled()
+
+    def ssl_cert_path_key(self):
+        cert_path = self.config.ssl_cert_path_key()
+        if cert_path:
+            return cert_path
+        else:
+            return self.url_domain() + ".key"
+
+    def ssl_cert_path_crt(self):
+        cert_path = self.config.ssl_cert_path_crt()
+        if cert_path:
+            return cert_path
+        else:
+            return self.url_domain() + ".crt"

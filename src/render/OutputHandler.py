@@ -5,7 +5,6 @@ import os
 
 from jinja2 import Environment
 
-from src.container.model.ContainerWrapper import ContainerWrapper
 from src.container.model.Domain import DockerPublicNetwork
 
 logger = logging.getLogger(__name__)
@@ -42,6 +41,13 @@ class OutputHandler:
                             "domain": container.url_domain(),
                             "path": container.url_path()
                         },
+                        "ssl": {
+                            "enabled": container.ssl_enable(),
+                            "cert_path": {
+                                "key": container.ssl_cert_path_key(),
+                                "crt": container.ssl_cert_path_crt()
+                            }
+                        },
                         "ip_v4": {
                             "ip": connected_to.get_ip4_address(),
                             "port": container.get_exposed_ip4_port_on(connected_to)
@@ -55,7 +61,7 @@ class OutputHandler:
                     render = self.j2_env.get_template(entry.name).render(output_context)
                     with open(os.path.join(self.output_dir, os.path.splitext(entry.name)[0]), 'w') as out_file:
                         out_file.write(render)
-                    logger.info("Ren: %s", render)
+                    logger.info("Rendered: %s", render)
                 else:
                     with open(os.path.join(self.template_dir, entry.name), 'r') as in_file:
                         with open(os.path.join(self.output_dir, entry.name), 'wt') as out_file:

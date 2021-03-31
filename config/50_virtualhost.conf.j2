@@ -1,5 +1,41 @@
 {% for container in containers -%}
+{%+ if container.ssl.enabled %}
 server {
+    listen 80;
+    listen [::]:80;
+
+    server_name {{ container.url.domain }};
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2 default_server;
+    listen [::]:443 ssl http2 default_server;
+
+    server_name {{ container.url.domain }};
+
+    {% if container.ssl.cert_path.crt.startswith('/') -%}
+    ssl_certificate "{{ container.ssl.cert_path.crt }}";
+    {%- else -%}
+    ssl_certificate "/etc/nginx/certs/{{ container.ssl.cert_path.crt }}";
+    {%- endif %}
+    {% if container.ssl.cert_path.key.startswith('/') -%}
+    ssl_certificate_key "{{ container.ssl.cert_path.key }}";
+    {%- else -%}
+    ssl_certificate_key "/etc/nginx/certs/{{ container.ssl.cert_path.key }}";
+    {%- endif %}
+
+{%- else -%}
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name {{ container.url.domain }};
+{%- endif %}
+
     gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
     # container id: {{ container.name }}({{ container.id }})

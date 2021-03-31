@@ -33,6 +33,22 @@ services:
       PORT: 9999
     networks:
       - internal
+  whoami_known:
+    image: jwilder/whoami
+    labels:
+      com.github.developerutils.docker-gen.enabled: yes
+      com.github.developerutils.docker-gen.url: whoami_known.vm.local/known
+      com.github.developerutils.docker-gen.exposed-port: 9999
+      com.github.developerutils.docker-gen.ssl.enabled: yes
+      com.github.developerutils.docker-gen.ssl.cert_path.key: /etc/nginx/certs/owned/test-me.key
+      com.github.developerutils.docker-gen.ssl.cert_path.crt: test.crt
+    environment:
+      WEB_PORTS: 8009
+      VIRTUAL_HOST: tools.imt.vm.local
+      PORT: 9999
+    networks:
+      - external
+      - internal
 
 volumes:
   portainer_data:
