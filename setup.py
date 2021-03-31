@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='docker-gen-nxt',
-    version='0.1.0',
+    version='0.2.0',
     description="Says hello",
     author="Christoph Graupner",
     author_email='ch.graupner@workingdeveloper.net',
