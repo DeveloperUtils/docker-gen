@@ -19,6 +19,7 @@ class App:
 
     def __init__(self):
         self.data = []
+        self.client = docker.from_env()
         self.j2_env = Environment(
             loader=FileSystemLoader(
                 searchpath=os.path.join(
@@ -27,9 +28,6 @@ class App:
                 )
             )
         )
-
-    def run(self):
-        self.client = docker.from_env()
         self.dockerHandler = DockerHandler(
             self.client,
             OutputHandler(
@@ -38,6 +36,12 @@ class App:
                 path.join(path.dirname(path.dirname(__file__)), "output")
             )
         )
+
+    def run_once(self):
+        logger.info("Started")
+        self.dockerHandler.init()
+
+    def run_as_daemon(self):
         logger.info("Started")
         self.dockerHandler.init()
         for event in self.client.events(decode=True):

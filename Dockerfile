@@ -27,8 +27,10 @@ RUN pip install --no-cache-dir docker jinja2
 
 COPY . /usr/src/app
 
+RUN mkdir -p /usr/src/app/logs && chmod a+rwx /usr/src/app/logs
+
 VOLUME /usr/src/app/config
 
-ARG VERSION=0.1.0
+ARG VERSION=0.2.0
 
-CMD [ "python3", "/usr/src/app/docker-gen.py" ]
+CMD [ "python3", "/usr/src/app/docker-gen.py", "--daemon" ]
