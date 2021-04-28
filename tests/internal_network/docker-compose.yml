@@ -42,6 +42,8 @@ services:
       com.github.developerutils.docker-gen.ssl.enabled: yes
       com.github.developerutils.docker-gen.ssl.cert_path.key: /etc/nginx/certs/owned/test-me.key
       com.github.developerutils.docker-gen.ssl.cert_path.crt: test.crt
+      com.github.developerutils.docker-gen.auth.area_name: "WhoAmI Area"
+      com.github.developerutils.docker-gen.auth.basic.group: "whoami"
     environment:
       WEB_PORTS: 8009
       VIRTUAL_HOST: tools.imt.vm.local

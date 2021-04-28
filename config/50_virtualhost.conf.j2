@@ -55,6 +55,11 @@ server {
     access_log /proc/self/fd/1;
 
     location {{ container.url.path }} {
+        {% if container.auth.enabled -%}
+        auth_basic "{{ container.auth.area_name }}";
+        auth_basic_user_file /etc/nginx/htpasswd/{{ container.auth.basic.group }}.htpasswd;
+
+        {% endif -%}
         proxy_pass http://{{ container.name }};
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;

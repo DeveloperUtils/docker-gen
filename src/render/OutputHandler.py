@@ -51,6 +51,14 @@ class OutputHandler:
                         "ip_v4": {
                             "ip": connected_to.get_ip4_address(),
                             "port": container.get_exposed_ip4_port_on(connected_to)
+                        },
+                        "auth": {
+                            "enabled": container.config.is_auth_enabled(),
+                            "area_name": container.config.get_auth_area_name(),
+                            "auth_type": container.config.get_auth_type(),
+                            "basic": {
+                                "group": container.config.get_auth_group()
+                            }
                         }
                     }
                 )

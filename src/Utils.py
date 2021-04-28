@@ -6,6 +6,10 @@ def is_true(value: str) -> bool:
     return value.lower() in ['true', '1', 't', 'y', 'yes']
 
 
+def is_not_blank(value) -> bool:
+    return value and str.strip(value)
+
+
 def initialize_logger(output_dir):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)

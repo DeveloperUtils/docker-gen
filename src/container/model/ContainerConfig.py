@@ -2,8 +2,8 @@ import logging
 from typing import Optional
 
 from src.Config import KEY_ENABLED, KEY_OUTBOUND, KEY_URL, KEY_FORWARD_PORT, KEY_SSL_ENABLED, KEY_SSL_CERT_KEY, \
-    KEY_SSL_CERT_CRT
-from src.Utils import is_true
+    KEY_SSL_CERT_CRT, KEY_AUTH_BASIC_GROUP, KEY_AUTH_AREA_NAME
+from src.Utils import is_true, is_not_blank
 
 logger = logging.getLogger(__name__)
 
@@ -63,3 +63,28 @@ class ContainerConfig:
     def get_forward_port(self) -> Optional[str]:
         if KEY_FORWARD_PORT in self.raw.keys():
             return str.strip(self.raw[KEY_FORWARD_PORT])
+
+    def is_auth_enabled(self) -> bool:
+        if KEY_AUTH_AREA_NAME in self.raw.keys():
+            return is_not_blank(self.raw[KEY_AUTH_AREA_NAME])
+        else:
+            return False
+
+    def get_auth_type(self) -> Optional[str]:
+        if KEY_AUTH_BASIC_GROUP in self.raw.keys():
+            if is_not_blank(self.raw[KEY_AUTH_BASIC_GROUP]):
+                return "basic"
+
+    def get_auth_group(self) -> Optional[str]:
+        if KEY_AUTH_BASIC_GROUP in self.raw.keys():
+            if is_not_blank(self.raw[KEY_AUTH_BASIC_GROUP]):
+                return str.strip(self.raw[KEY_AUTH_BASIC_GROUP])
+
+    def get_auth_area_name(self) -> str:
+        if KEY_AUTH_AREA_NAME in self.raw.keys():
+            if is_not_blank(self.raw[KEY_AUTH_AREA_NAME]):
+                return str.strip(self.raw[KEY_AUTH_AREA_NAME])
+            else:
+                return "Unknown"
+        else:
+            return "Undefined"

@@ -20,6 +20,8 @@ services:
     labels:
       com.github.developerutils.docker-gen.enabled: yes
       com.github.developerutils.docker-gen.url: whoami.vm.local/
+      com.github.developerutils.docker-gen.auth.area_name: "WhoAmI Area"
+      com.github.developerutils.docker-gen.auth.basic.group: "whoami"
     environment:
       WEB_PORTS: 8009
       VIRTUAL_HOST: tools.imt.vm.local
