@@ -39,11 +39,15 @@ class DockerHandler:
                         self.topology.add_container(container_wrap)
                         logger.debug("RUNNING: " + container_wrap.id())
                         if container_wrap.is_relevant():
-                            logger.info("FOUND RELEVANT RUNNING CONTAINER id:%s", container_wrap.id())
+                            logger.info(
+                                "FOUND RELEVANT RUNNING CONTAINER '%s'(id:%s)",
+                                container_wrap.name(),
+                                container_wrap.id()
+                            )
                         logger.debug(container_wrap.id())
                 self.output_handler.run(self.topology)
                 done = True
                 logger.debug("###### REFRESH END ############################")
-            except:
-                logger.warning("Exception")
+            except Exception as e:
+                logger.warning("Exception %s", e, exc_info=True)
                 retries += 1
