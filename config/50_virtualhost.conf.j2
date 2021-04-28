@@ -1,10 +1,17 @@
 {% for container in containers -%}
+
+# container id: {{ container.name }}({{ container.id }})
+
 {%+ if container.ssl.enabled %}
 server {
     listen 80;
     listen [::]:80;
 
     server_name {{ container.url.domain }};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
 
     location / {
         return 301 https://$host$request_uri;
@@ -34,12 +41,15 @@ server {
     listen [::]:80;
 
     server_name {{ container.url.domain }};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
 {%- endif %}
 
     gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
-    # container id: {{ container.name }}({{ container.id }})
-    server_name {{ container.url.domain }};
     proxy_buffering off;
     error_log /proc/self/fd/2;
     access_log /proc/self/fd/1;
